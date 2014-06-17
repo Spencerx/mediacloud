@@ -102,6 +102,24 @@ EOF
 else
 
     # assume Ubuntu
+
+    # Apt's version of Supervisor is too old
+    sudo apt-get -y remove supervisor
+
+    # Apt's version of Vagrant is too old
+    sudo apt-get -y remove vagrant
+
+    # Apt's version of Gearman is too old
+    sudo apt-get -y remove gearman gearman-job-server gearman-tools \
+        libgearman-dbg libgearman-dev libgearman-doc libgearman6
+
+    # Install Gearman from PPA repository
+    sudo apt-get -y install python-software-properties
+    sudo add-apt-repository -y ppa:gearman-developers/ppa
+    sudo apt-get -y update
+    sudo apt-get -y install gearman-job-server gearman-tools libgearman-dev
+
+    # Install the rest of the packages
     sudo apt-get --assume-yes install \
         expat libexpat1-dev libxml2-dev gawk postgresql-server-dev-all \
         libdb-dev libtest-www-mechanize-perl libtidy-dev \
@@ -112,13 +130,7 @@ else
         python-lxml-dbg python-lxml-doc python-libxml2 libxml2-dev \
         libxslt1-dev libxslt1-dbg libxslt1.1 build-essential make gcc g++ \
         cpanminus perl-doc liblocale-maketext-lexicon-perl openjdk-7-jdk \
-        pandoc gearman libgearman-dev maven
-
-    # Apt's version of Supervisor is too old
-    sudo apt-get remove -y supervisor
-
-    # Apt's version of Vagrant is too old
-    sudo apt-get remove -y vagrant
+        pandoc maven
     
     # have to change dir or it think you are trying to install from the supervisor/ dir
     ( cd /tmp; sudo easy_install supervisor ) 
